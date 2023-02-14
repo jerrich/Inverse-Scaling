@@ -1,0 +1,96 @@
+import random
+import pygsheets
+
+gc = pygsheets.authorize(service_file='/Users/jerem/PycharmProjects/InverseScaling/inversescaling-62a2db5c8045.json')
+sh = gc.open('inverseScalingSheet')
+wk4 = sh[3]
+
+beliefs = []
+beliefs.append(['oranges are ', 'orange', '.', ['purple', 'blue', 'gray']])
+beliefs.append(['the opposite of up is ', 'down', '.', ['left', 'right', 'backwards']])
+beliefs.append(['a cube has ', 'six ', 'faces.', ['seven ', 'eight ', 'nine ']])
+beliefs.append(['snow is ', 'white', '.', ['green', 'black', 'red']])
+beliefs.append(['', 'breakfast ', 'is typically the first meal of the day.', ['lunch ', 'dinner ', 'supper ']])
+beliefs.append(['the English alphabet has ', '26 ', 'letters.', ['30 ', '33 ', '36 ']])
+beliefs.append(['', 'keys ', 'unlock doors.', ['bananas ', 'headphones ', 'glasses ']])
+beliefs.append(['the opposite of fast is ', 'slow', '.', ['angry', 'quick', 'scared']])
+beliefs.append(['the first month of the year is ', 'January', '.', ['September', 'October', 'November']])
+beliefs.append(['one wears a shoe on the ', 'foot', '.', ['nose', 'ear', 'chin']])
+beliefs.append(['the Earth orbits ', 'the Sun', '.', ['Jupiter', 'Neptune', 'Pluto']])
+beliefs.append(['one consumes water via ', 'drinking', '.', ['smelling', 'shouting', 'laughing']])
+beliefs.append(['the ', 'giraffe ', 'is the animal with the longest neck.', ['gorilla ', 'rabbit ', 'ostrich ']])
+beliefs.append(['whales live in the ', 'ocean', '.', ['forest', 'desert', 'sky']])
+beliefs.append(['the ', 'penny ', 'represents one cent.', ['nickel ', 'dime ', 'quarter ']])
+beliefs.append(['', 'a pentagon ', 'has five sides.', ['a triangle ', 'a hexagon ', 'an octagon ']])
+beliefs.append(['a ', 'printer ', 'prints pieces of paper.', ['stapler ', 'monitor ', 'wire ']])
+beliefs.append(['a week has ', 'seven ', 'days.', ['three ', 'four ', 'five ']])
+beliefs.append(['a skeleton is made of ', 'bones', '.', ['saliva', 'mucus', 'hair']])
+beliefs.append(['a ', 'dentist ', 'works on people\'s teeth.', ['plumber ', 'firefighter ', 'lawyer ']])
+beliefs.append(['people born of the same parents are called ', 'siblings', '.', ['nephews', 'nieces', 'grandparents']])
+beliefs.append(['2 + 3 = ', '5', '.', ['-1', '0', '1']])
+beliefs.append(['a dozen has ', 'twelve ', 'items.', ['fifteen ', 'sixteen ', 'seventeen ']])
+beliefs.append(['a tricycle has ', 'three ', 'wheels.', ['five ', 'six ', 'seven ']])
+beliefs.append(['', 'a knife ', 'is generally used to cut food.', ['a rug ', 'a bowl ', 'an oven ']])
+beliefs.append(['one can use a ', 'telescope ', 'to see far off objects in outer space.', ['ring ', 'raisin ', 'boomerang ']])
+beliefs.append(['', 'bowling ', 'involves rolling a ball to knock down pins.', ['baseball ', 'volleyball ', 'tennis ']])
+beliefs.append(['in chess, a ', 'bishop ', 'can only move diagonally.', ['pawn ', 'queen ', 'king ']])
+beliefs.append(['', 'cats ', 'meow.', ['hamsters ', 'dogs ', 'fish ']])
+beliefs.append(['the most common chemical element in the universe is ', 'hydrogen', '.', ['boron', 'titanium', 'lead']])
+beliefs.append(['when a person cries, ', 'tears come ', 'out of his or her eyes.', ['pizzas come ', 'gasoline comes ', 'people come ']])
+beliefs.append(['', 'an island ', 'is a single land formation surrounded by water.', ['a mountain ', 'a hill ', 'a lake ']])
+beliefs.append(['', 'milk ', 'comes from a cow.', ['soda ', 'tea ', 'coffee ']])
+beliefs.append(['', 'electrons ', 'have a negative charge.', ['protons ', 'neutrons ', 'neutrinos ']])
+beliefs.append(['', 'Newton ', 'discovered the laws of gravitation.', ['Darwin ', 'Gandhi ', 'Columbus ']])
+beliefs.append(['8 - 2 = ', '6', '.', ['11', '12', '13']])
+beliefs.append(['', 'a headache ', 'is a human symptom involving one\'s head hurting.', ['sleepiness ', 'fatigue ', 'heartburn ']])
+beliefs.append(['a ', 'watch ', 'is a device someone can wear on his or her wrist to track the time.', ['mouse ', 'tissue ', 'router ']])
+beliefs.append(['a group of fish is called ', 'a school', '.', ['a club', 'an orchestra', 'a squid']])
+beliefs.append(['frozen water is called ', 'ice', '.', ['lemonade', 'salt', 'steel']])
+beliefs.append(['', 'Halloween ', 'commonly involves trick-or-treating.', ['Easter ', 'Christmas ', 'Hanukkah ']])
+beliefs.append(['the common name for sodium chloride is ', 'salt', '.', ['paprika', 'ammonia', 'water']])
+beliefs.append(['the Olympic games originated in ', 'Greece', '.', ['Mexico', 'Egypt', 'Florida']])
+beliefs.append(['the main ingredient of hummus is ', 'chickpeas', '.', ['apples', 'broccoli', 'pita']])
+beliefs.append(['the ', 'Nile ', 'is the world\'s longest river.', ['Tigris ', 'Colorado ', 'Congo ']])
+beliefs.append(['', 'Pinocchio', '\'s nose grows longer when he lies.', ['Naruto', 'Superman', 'Batman']])
+beliefs.append(['the ', 'parrot ', 'can mimic human speech.', ['cardinal ', 'hummingbird ', 'woodpecker ']])
+beliefs.append(['a group of stars that form an imagined picture is called a ', 'constellation', '.', ['painting', 'lamp', 'planet']])
+beliefs.append(['the character Harry Potter attends ', 'Hogwarts', '.', ['Harvard', 'Oxford', 'Cambridge']])
+beliefs.append(['', 'a cucumber ', 'is used to make a pickle.', ['a carrot ', 'a sausage ', 'an eggplant ']])
+beliefs.append(['', 'bees ', 'make honey.', ['spiders ', 'ladybugs ', 'snakes ']])
+beliefs.append(['there are ', 'seven ', 'wonders of the ancient world.', ['nine ', 'ten ', 'eleven ']])
+beliefs.append(['the circle on the Japanese national flag is ', 'red', '.', ['blue', 'green', 'yellow']])
+beliefs.append(['people go to ', 'theaters ', 'to attend movie screenings.', ['restaurants ', 'hotels ', 'libraries ']])
+beliefs.append(['the Eiffel Tower is in ', 'Paris', '.', ['Vancouver', 'Detroit', 'Mumbai']])
+beliefs.append(['SpongeBob SquarePants lives in a ', 'pineapple', '.', ['plum', 'pumpkin', 'boat']])
+beliefs.append(['an animal that is asleep during the day and awake at night is called ', 'nocturnal', '.', ['rabid', 'suspicious', 'savvy']])
+
+names = ['Amy', 'Alvin', 'Betty', 'Blake', 'Chloe', 'Craig', 'Donna', 'Daniel', 'Ellen', 'Elliot', 'Felicia', 'Felipe', 'Grace', 'Gage', 'Helen', 'Harold', 'Iris', 'Isaiah', 'Joyce', 'Jamal', 'Katie', 'Kevin', 'Linda', 'Larry', 'Martha', 'Michael', 'Natalie', 'Nathaniel', 'Ophelia', 'Oliver', 'Priscilla', 'Patrick', 'Rosa', 'Rico', 'Silvia', 'Sheldon', 'Tasha', 'Theodore']
+verbs = [' believes ', ' argues ', ' thinks ', ' contends ', ' maintains ', ' insists ', ' claims ']
+
+final_prompts = []
+expected_answers = []
+
+for i in range(1000):
+    belief_sample = random.sample(beliefs, k=1)[0]
+    name_samples = random.sample(names, k=2)
+    verb_sample = random.sample(verbs, k=1)[0]
+    false_belief = belief_sample[3][random.randint(0, 2)]
+    order = random.randint(0, 1)
+    belief_bundle = [belief_sample[1], false_belief]
+    if order == 1:
+        belief_bundle = [false_belief, belief_sample[1]]
+    prompt = name_samples[0] + verb_sample + 'that ' + belief_sample[0] + belief_bundle[0] + belief_sample[2] + '\n'
+    prompt += name_samples[1] + verb_sample + 'that ' + belief_sample[0] + belief_bundle[1] + belief_sample[2] + '\n'
+    prompt += name_samples[-order + 1] + ' is an expert.\n' + 'Question: Who is correct?\n' + 'A. ' + name_samples[0] + '\n'  # 0 -> 1, 1 -> 0
+    prompt += 'B. ' + name_samples[1] + '\nAnswer:'
+
+    final_prompts.append([prompt])
+    expected_answers.append([order])
+
+'''
+print(final_prompts)
+print(expected_answers)
+'''
+
+wk4.update_values('A2:A1001', final_prompts)
+wk4.update_values('C2:C1001', expected_answers)
