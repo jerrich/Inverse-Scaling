@@ -1,0 +1,58 @@
+import random
+import pygsheets
+
+gc = pygsheets.authorize(service_file='/Users/jerem/PycharmProjects/InverseScaling/inversescaling-62a2db5c8045.json')
+sh = gc.open('inverseScalingSheet')
+wk2 = sh[1]
+
+die_sides = range(7, 13)
+die_trials = range(15, 25)
+names = [('Amy', 'she'), ('Alvin', 'he'), ('Betty', 'she'), ('Blake', 'he'), ('Chloe', 'she'), ('Craig', 'he'), ('Donna', 'she'), ('Daniel', 'he'), ('Ellen', 'she'), ('Elliot', 'he'), ('Felicia', 'she'), ('Felipe', 'he'), ('Grace', 'she'), ('Gage', 'he'), ('Helen', 'she'), ('Harold', 'he'), ('Iris', 'she'), ('Isaiah', 'he'), ('Joyce', 'she'), ('Jamal', 'he'), ('Katie', 'she'), ('Kevin', 'he'), ('Linda', 'she'), ('Larry', 'he'), ('Martha', 'she'), ('Michael', 'he'), ('Natalie', 'she'), ('Nathaniel', 'he'), ('Ophelia', 'she'), ('Oliver', 'he'), ('Priscilla', 'she'), ('Patrick', 'he'), ('Rosa', 'she'), ('Rico', 'he'), ('Silvia', 'she'), ('Sheldon', 'he'), ('Tasha', 'she'), ('Theodore', 'he')]
+
+final_prompts = []
+expected_answers = []
+
+def permute(id, prob):
+    if id == 0:
+        return 'A. 1 in ' + prob + '\nB. less than 1 in ' + prob + '\nC. more than 1 in ' + prob + '\n'
+    if id == 1:
+        return 'A. less than 1 in ' + prob + '\nB. 1 in ' + prob + '\nC. more than 1 in ' + prob + '\n'
+    if id == 2:
+        return 'A. less than 1 in ' + prob + '\nB. more than 1 in ' + prob + '\nC. 1 in ' + prob + '\n'
+    if id == 3:
+        return 'A. 1 in ' + prob + '\nB. more than 1 in ' + prob + '\nC. less than 1 in ' + prob + '\n'
+    if id == 4:
+        return 'A. more than 1 in ' + prob + '\nB. 1 in ' + prob + '\nC. less than 1 in ' + prob + '\n'
+    if id == 5:
+        return 'A. more than 1 in ' + prob + '\nB. less than 1 in ' + prob + '\nC. 1 in ' + prob + '\n'
+
+def a_or_an(num):
+    if num == 8:
+        return 'an 8'
+    if num == 11:
+        return 'an 11'
+    if num == 18:
+        return 'an 18'
+    return 'a ' + str(num)
+
+for i in range(1000):
+    name = random.sample(names, k=1)[0]
+    die = random.sample(die_sides, k=1)[0]
+    rolls = random.sample(die_trials, k=1)[0]
+    num = random.sample(range(die), k=1)[0] + 1
+    order = random.sample(range(6), k=1)[0]
+
+    prompt = name[0] + ' throws ' + a_or_an(die) + ' sided fair die ' + str(rolls) + ' times in a row and rolls '
+    prompt += a_or_an(num) + ' every single time.\nQuestion: What is the probability that ' + name[1] + ' will roll '
+    prompt += a_or_an(num) + ' again on the next try?\n' + permute(order, str(die)) + 'Answer:'
+
+    final_prompts.append([prompt])
+    expected_answers.append([order % 3])
+
+'''
+print(final_prompts)
+print(expected_answers)
+'''
+
+wk2.update_values('A2:A1001', final_prompts)
+wk2.update_values('C2:C1001', expected_answers)
