@@ -8,7 +8,7 @@ I have generated the data in response to this: https://github.com/inverse-scalin
 
 ## Setup
 
-The five programs generating datasets are triviaMod, gambling, decoy, expert, and pretend. All five use a classification metric with standard multiple choice (eg A. B. or A. B. C. D.).<br /><br />
+The five programs generating datasets are triviaMod, gambling, decoy, expert, and pretend. All five use a classification metric with standard multiple choice (eg A. B. or A. B. C. D.). The actual data used is here: https://docs.google.com/spreadsheets/d/1IaonTwvqM2nQ81WHhum6vifD0Eu-WuWzVWyQ1JWe1zk/edit?usp=sharing.<br /><br />
 
 TriviaMod asks a basic trivia question with some language modification: an extra letter in front of each word. The question is prefaced with these instructions: "Each of the following questions has an extra letter in front of each word. Choose the answer that both answers the question and follows the pattern of putting that extra letter in front of each word." as well as several examples. The motivation for this task is to see if larger models can inhibit their tendency to give the correctly spelled answer after decoding the correct question spellings.<br /><br />
 
