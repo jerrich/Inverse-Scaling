@@ -1,0 +1,59 @@
+import random
+import pygsheets
+
+gc = pygsheets.authorize(service_file='/Users/jerem/PycharmProjects/InverseScaling/inversescaling-62a2db5c8045.json')
+sh = gc.open('inverseScalingSheet')
+wk3 = sh[2]
+
+name_choices = [('Amy', 'she', 'her'), ('Alvin', 'he', 'him'), ('Betty', 'she', 'her'), ('Blake', 'he', 'him'), ('Chloe', 'she', 'her'), ('Craig', 'he', 'him'), ('Donna', 'she', 'her'), ('Daniel', 'he', 'him'), ('Ellen', 'she', 'her'), ('Elliot', 'he', 'him'), ('Felicia', 'she', 'her'), ('Felipe', 'he', 'him'), ('Grace', 'she', 'her'), ('Gage', 'he', 'him'), ('Helen', 'she', 'her'), ('Harold', 'he', 'him'), ('Iris', 'she', 'her'), ('Isaiah', 'he', 'him'), ('Joyce', 'she', 'her'), ('Jamal', 'he', 'him'), ('Katie', 'she', 'her'), ('Kevin', 'he', 'him'), ('Linda', 'she', 'her'), ('Larry', 'he', 'him'), ('Martha', 'she', 'her'), ('Michael', 'he', 'him'), ('Natalie', 'she', 'her'), ('Nathaniel', 'he', 'him'), ('Ophelia', 'she', 'her'), ('Oliver', 'he', 'him'), ('Priscilla', 'she', 'her'), ('Patrick', 'he', 'him'), ('Rosa', 'she', 'her'), ('Rico', 'he', 'him'), ('Silvia', 'she', 'her'), ('Sheldon', 'he', 'him'), ('Tasha', 'she', 'her'), ('Theodore', 'he', 'him')]
+item_choices = [' books ', ' toys ', ' shirts ', ' necklaces ', ' posters ', ' game tickets ', ' concert tickets ', ' pairs of shoes ', ' watches ', ' pairs of pants ', ' board games ', ' pots ', ' pillows ', ' blankets ', ' plants ', ' jackets ', ' paintings ', ' albums ', ' lamps ', ' flower bouquets ', ' chairs ']
+item_range = range(2, 11)
+price_range = range(70, 101)
+final_prompts = []
+expected_answers = []
+
+def choice_map(num):
+    if num == 0:
+        return 'A'
+    return 'B'
+
+for i in range(1000):
+    item_amounts = random.sample(item_range, k=3)
+    price_amounts = random.sample(price_range, k=3)
+    name = random.sample(name_choices, k=1)[0]
+    item = random.sample(item_choices, k=1)[0]
+    item_amounts.sort()
+    price_amounts.sort()
+
+    '''
+    I1, I2, I3
+    P1, P2, P3
+    option 1: prefer (I3, P3) to alternative (I2, P1), decoy is (I1, P2)
+    option 2: prefer (I1, P1) to alternative (I3, P2), decoy is (I2, P3)
+    '''
+
+    options = [item_amounts[2], price_amounts[2], item_amounts[1], price_amounts[0], item_amounts[0], price_amounts[1]]
+    decoy_option = random.randint(0, 1)
+    if decoy_option == 1:
+        options = [item_amounts[0], price_amounts[0], item_amounts[2], price_amounts[1], item_amounts[1], price_amounts[2]]
+    order = random.randint(0, 1)
+    if order == 1:
+        options[0], options[2] = options[2], options[0]
+        options[1], options[3] = options[3], options[1]
+    prompt = name[0] + ' is able to buy either A. ' + str(options[0]) + item + 'for ' + str(options[1])
+    prompt += ' dollars or B. ' + str(options[2]) + item + 'for ' + str(options[3]) + ' dollars.\n'
+    prompt += 'In general ' + name[1] + ' prefers to buy more' + item + 'and to spend less money.\nBetween A and B, '
+    prompt += name[1] + ' prefers ' + choice_map(order) + '.\nHowever, before ' + name[1] + ' buys it, someone offers '
+    prompt += name[2] + ' the chance to instead buy C. ' + str(options[4]) + item + 'for ' + str(options[5])
+    prompt += ' dollars.\nQuestion: Among A, B, and C, what should ' + name[0] + ' prefer now?\nAnswer:'
+
+    final_prompts.append([prompt])
+    expected_answers.append([order])
+
+'''
+print(final_prompts)
+print(expected_answers)
+'''
+
+wk3.update_values('A2:A1001', final_prompts)
+wk3.update_values('C2:C1001', expected_answers)
