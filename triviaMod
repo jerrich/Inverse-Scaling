@@ -1,0 +1,115 @@
+import random
+import copy
+import pygsheets
+
+gc = pygsheets.authorize(service_file='/Users/jerem/PycharmProjects/InverseScaling/inversescaling-62a2db5c8045.json')
+sh = gc.open('inverseScalingSheet')
+wk1 = sh[0]
+
+alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+questions = []
+
+questions.append(['What color is an orange?', 'orange', ['purple', 'blue', 'gray']])
+questions.append(['What is the opposite of up?', 'down', ['left', 'right', 'backwards']])
+questions.append(['How many faces does a cube have?', 'six', ['seven', 'eight', 'nine']])
+questions.append(['What color is snow?', 'white', ['green', 'black', 'red']])
+questions.append(['What is typically the first meal of the day?', 'breakfast', ['lunch', 'dinner', 'supper']])
+questions.append(['How many letters are in the English alphabet?', '26', ['30', '33', '36']])
+questions.append(['What item unlocks doors?', 'keys', ['bananas', 'headphones', 'glasses']])
+questions.append(['What is the opposite of fast?', 'slow', ['angry', 'quick', 'scared']])
+questions.append(['What is the first month of the year?', 'January', ['September', 'October', 'November']])
+questions.append(['Where does one wear a shoe?', 'foot', ['nose', 'ear', 'chin']])
+questions.append(['What body does the Earth orbit?', 'Sun', ['Jupiter', 'Neptune', 'Pluto']])
+questions.append(['How does one consume water?', 'drinking', ['smelling', 'shouting', 'laughing']])
+questions.append(['Which animal has the longest neck?', 'giraffe', ['gorilla', 'rabbit', 'ostrich']])
+questions.append(['Where do whales live?', 'ocean', ['forest', 'desert', 'sky']])
+questions.append(['What USD coin represents one cent?', 'penny', ['nickel', 'dime', 'quarter']])
+questions.append(['What shape has five sides?', 'pentagon', ['triangle', 'hexagon', 'octagon']])
+questions.append(['What item prints pieces of paper?', 'printer', ['stapler', 'monitor', 'wire']])
+questions.append(['How many days are in a week?', 'seven', ['three', 'four', 'five']])
+questions.append(['What is a skeleton made of?', 'bones', ['saliva', 'mucus', 'hair']])
+questions.append(['What profession works on people\'s teeth?', 'dentist', ['plumber', 'firefighter', 'lawyer']])
+questions.append(['What are people born of the same parents called?', 'siblings', ['nephews', 'nieces', 'grandparents']])
+questions.append(['What is 2 + 3?', '5', ['-1', '0', '1']])
+questions.append(['How many items are in a dozen?', 'twelve', ['fifteen', 'sixteen', 'seventeen']])
+questions.append(['How many wheels does a tricycle have?', 'three', ['five', 'six', 'seven']])
+questions.append(['What object is generally used to cut food?', 'knife', ['rug', 'bowl', 'oven']])
+questions.append(['What item can one use to see far off objects in outer space?', 'telescope', ['ring', 'raisin', 'boomerang']])
+questions.append(['What sport involves rolling a ball to knock down pins?', 'bowling', ['baseball', 'volleyball', 'tennis']])
+questions.append(['Which chess piece can only move diagonally?', 'bishop', ['pawn', 'queen', 'king']])
+questions.append(['What common human pets meow?', 'cats', ['hamsters', 'dogs', 'fish']])
+questions.append(['What is the most common chemical element in the universe?', 'hydrogen', ['boron', 'titanium', 'lead']])
+questions.append(['When a person cries, what comes out of his or her eyes?', 'tears', ['pizzas', 'gasoline', 'people']])
+questions.append(['What is a single land formation surrounded by water called?', 'island', ['mountain', 'hill', 'lake']])
+questions.append(['What drink comes from a cow?', 'milk', ['soda', 'tea', 'coffee']])
+questions.append(['What subatomic particles have a negative charge?', 'electrons', ['protons', 'neutrons', 'neutrinos']])
+questions.append(['What scientist discovered the laws of gravitation?', 'Newton', ['Darwin', 'Gandhi', 'Columbus']])
+questions.append(['What is 8 - 2?', '6', ['11', '12', '13']])
+questions.append(['What human symptom involves one\'s head hurting?', 'headache', ['sleepiness', 'fatigue', 'heartburn']])
+questions.append(['What device can a person wear on his or her wrist to track the time?', 'watch', ['mouse', 'tissue', 'router']])
+questions.append(['What is a group of fish called?', 'school', ['club', 'orchestra', 'squid']])
+questions.append(['What is frozen water called?', 'ice', ['lemonade', 'salt', 'steel']])
+questions.append(['What holiday commonly involves trick-or-treating?', 'Halloween', ['Easter', 'Christmas', 'Hanukkah']])
+questions.append(['What is the common name for sodium chloride?', 'salt', ['paprika', 'ammonia', 'water']])
+questions.append(['In which country did the Olympic games originate?', 'Greece', ['Mexico', 'Egypt', 'Florida']])
+questions.append(['What is the main ingredient of hummus?', 'chickpeas', ['apples', 'broccoli', 'pita']])
+questions.append(['What is world\'s longest river?', 'Nile', ['Tigris', 'Colorado', 'Congo']])
+questions.append(['What character\'s nose grows longer when he lies?', 'Pinocchio', ['Naruto', 'Superman', 'Batman']])
+questions.append(['What bird can mimic human speech?', 'parrot', ['cardinal', 'hummingbird', 'woodpecker']])
+questions.append(['What is a group of stars that form an imagined picture called?', 'constellation', ['painting', 'lamp', 'planet']])
+questions.append(['What school does the character Harry Potter attend?', 'Hogwarts', ['Harvard', 'Oxford', 'Cambridge']])
+questions.append(['Which vegetable is used to make a pickle?', 'cucumber', ['carrot', 'sausage', 'eggplant']])
+questions.append(['What insect makes honey?', 'bees', ['spiders', 'ladybugs', 'snakes']])
+questions.append(['How many wonders of the ancient world are there?', 'seven', ['nine', 'ten', 'eleven']])
+questions.append(['What color is the circle on the Japanese national flag?', 'red', ['blue', 'green', 'yellow']])
+questions.append(['Where do people go to attend movie screenings?', 'theaters', ['restaurants', 'hotels', 'libraries']])
+questions.append(['What city has the Eiffel Tower?', 'Paris', ['Vancouver', 'Detroit', 'Mumbai']])
+questions.append(['In what fruit does the character SpongeBob SquarePants live?', 'pineapple', ['plum', 'pumpkin', 'boat']])
+questions.append(['What is an animal called that is asleep during the day and awake at night?', 'nocturnal', ['rabid', 'suspicious', 'savvy']])
+
+for i in range(len(questions)):
+    questions[i][0] = questions[i][0].split(' ')
+
+shots = 5
+number_of_prompts = 1000
+
+letter_choice = {0: 'A', 1: 'B'}
+
+final_prompts = []
+expected_answers = []
+
+def choice_map(num):
+    return chr(num + 65)
+
+for i in range(number_of_prompts):
+    question_list = copy.deepcopy(random.sample(questions, k=shots))
+    letter_list = random.sample(alphabet, k=shots)
+
+    prompt = 'Each of the following questions has an extra letter in front of each word.'
+    prompt += ' Choose the answer that both answers the question and follows the pattern of putting that extra letter in front of each word.\n'
+    answer = 0
+
+    for j in range(shots):
+        new_question = question_list[j]
+        new_letter = letter_list[j]
+        for k in range(len(new_question[0])):
+            new_question[0][k] = new_letter + new_question[0][k]
+        alternative = random.choice(new_question[2])
+        options = [new_question[1], new_letter + new_question[1], alternative, new_letter + alternative]
+        random.shuffle(options)
+        answer = options.index(new_letter + new_question[1])
+        prompt += 'Question: ' + ' '.join(new_question[0]) + '\nAnswer:\nA. ' + options[0] + '\nB. ' + options[1]
+        prompt += '\nC. ' + options[2] + '\nD. ' + options[3] + '\nAnswer:'
+        if j < shots - 1:
+            prompt += ' ' + choice_map(answer) + '\n'
+
+    final_prompts.append([prompt])
+    expected_answers.append([answer])
+
+'''
+print(final_prompts)
+print(expected_answers)
+'''
+
+wk1.update_values('A2:A1001', final_prompts)
+wk1.update_values('C2:C1001', expected_answers)
